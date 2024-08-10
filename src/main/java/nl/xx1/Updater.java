@@ -1,18 +1,13 @@
 package nl.xx1;
 
 import java.io.File;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import nl.xx1.analyzer.AbstractAnalyzer;
-import nl.xx1.analyzer.Analyzer;
 import nl.xx1.analyzer.AnalyzerSorter;
 import nl.xx1.deobfuscation.Renamer;
 import nl.xx1.utilities.JarUtilities;
 import org.objectweb.asm.tree.ClassNode;
-import org.reflections.Reflections;
 
 public class Updater {
     private final String path;
@@ -58,7 +53,6 @@ public class Updater {
 
         JarUtilities.recomputeMaxsForClasses(classNodes);
         JarUtilities.saveClassesToDisk(classNodes, String.format("deob-gamepacks/%s/", file.getName()));
-
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,8 @@
 package nl.xx1.analyzer;
 
-import org.reflections.Reflections;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import org.reflections.Reflections;
 
 public class AnalyzerSorter {
 
@@ -19,7 +18,8 @@ public class AnalyzerSorter {
             try {
                 Analyzer annotation = clazz.getAnnotation(Analyzer.class);
                 String name = annotation.name();
-                AbstractAnalyzer analyzer = (AbstractAnalyzer) clazz.getDeclaredConstructor().newInstance();
+                AbstractAnalyzer analyzer =
+                        (AbstractAnalyzer) clazz.getDeclaredConstructor().newInstance();
                 analyzerMap.put(name, analyzer);
                 graph.put(name, new HashSet<>(Arrays.asList(annotation.runBefore())));
                 for (String afterName : annotation.runAfter()) {
@@ -55,8 +55,12 @@ public class AnalyzerSorter {
         return result;
     }
 
-    private void visit(String node, Map<String, Set<String>> graph, Set<String> visited,
-                       Set<String> tempMark, List<String> result) {
+    private void visit(
+            String node,
+            Map<String, Set<String>> graph,
+            Set<String> visited,
+            Set<String> tempMark,
+            List<String> result) {
         if (tempMark.contains(node)) {
             throw new RuntimeException("Circular dependency detected involving node: " + node);
         }

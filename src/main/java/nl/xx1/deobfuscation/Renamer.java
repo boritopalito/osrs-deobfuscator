@@ -1,19 +1,19 @@
 package nl.xx1.deobfuscation;
 
+import java.util.List;
 import nl.xx1.Field;
 import nl.xx1.Method;
 import nl.xx1.analyzer.AbstractAnalyzer;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-import java.util.List;
-
 public class Renamer {
     private int totalClasses = 0;
 
     public void execute(List<ClassNode> classNodes, List<AbstractAnalyzer> analyzers) {
         totalClasses = classNodes.size();
-        List<AbstractAnalyzer> fAnalyzers = analyzers.stream().filter(a -> a.getClassNode() != null).toList();
+        List<AbstractAnalyzer> fAnalyzers =
+                analyzers.stream().filter(a -> a.getClassNode() != null).toList();
 
         for (AbstractAnalyzer analyzer : fAnalyzers) {
             updateClassName(classNodes, analyzer);
@@ -103,7 +103,8 @@ public class Renamer {
 
                 for (AbstractInsnNode insnNode : methodNode.instructions) {
                     if (insnNode instanceof MethodInsnNode methodInsnNode) {
-                        if (methodInsnNode.owner.equals(analyzer.getClassNode().name) && methodInsnNode.name.equals(method.getObfuscatedName())) {
+                        if (methodInsnNode.owner.equals(analyzer.getClassNode().name)
+                                && methodInsnNode.name.equals(method.getObfuscatedName())) {
                             methodInsnNode.name = method.getName();
                         }
                     }
@@ -131,7 +132,8 @@ public class Renamer {
                     }
 
                     if (abstractInsnNode instanceof TypeInsnNode typeInsnNode) {
-                        if (typeInsnNode.getOpcode() == Opcodes.NEW && typeInsnNode.desc.equals(analyzer.getClassNode().name)) {
+                        if (typeInsnNode.getOpcode() == Opcodes.NEW
+                                && typeInsnNode.desc.equals(analyzer.getClassNode().name)) {
                             typeInsnNode.desc = analyzer.getClass().getSimpleName();
                         }
                     }

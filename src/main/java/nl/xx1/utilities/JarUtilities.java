@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -65,20 +64,20 @@ public class JarUtilities {
                                 methodNode.name,
                                 methodNode.desc,
                                 methodNode.signature,
-                                methodNode.exceptions.toArray(new String[0])
-                        );
+                                methodNode.exceptions.toArray(new String[0]));
 
                         // Accept the MethodVisitor to recompute MAXS and MAXLOCALS
                         methodNode.accept(methodVisitor);
                     } catch (Exception e) {
-                        //System.err.println("Error processing method " + methodNode.name + " in class " + classNode.name + ": " + e.getMessage());
+                        // System.err.println("Error processing method " + methodNode.name + " in class " +
+                        // classNode.name + ": " + e.getMessage());
                     }
                 }
 
                 // Convert the modified ClassNode back to a byte array
                 classNode.accept(classWriter);
             } catch (Exception e) {
-                //System.err.println("Error processing class " + classNode.name + ": " + e.getMessage());
+                // System.err.println("Error processing class " + classNode.name + ": " + e.getMessage());
             }
         }
     }
@@ -119,14 +118,13 @@ public class JarUtilities {
 
     public static void deleteDirectoryRecursively(Path directory) throws IOException {
         try (Stream<Path> walk = Files.walk(directory)) {
-            walk.sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+            walk.sorted(Comparator.reverseOrder()).forEach(path -> {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         } catch (IOException e) {
             throw new IOException("Failed to delete directory: " + directory, e);
         }

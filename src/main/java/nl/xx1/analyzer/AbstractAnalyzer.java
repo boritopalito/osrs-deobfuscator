@@ -21,7 +21,6 @@ public abstract class AbstractAnalyzer {
         this.classNode = classNode;
         matchFields(classNode);
         long speed = System.currentTimeMillis() - start;
-        System.out.printf("[- Node finished in %d ms -]%n", speed);
     }
 
     public abstract void matchFields(ClassNode classNode);
