@@ -34,7 +34,7 @@ public class Field {
 
     @Override
     public String toString() {
-        return String.format("\t[- '%s' identified as %s -]", obfuscatedName, name);
+        return String.format("\t[- Field '%s' identified as %s -]", name, obfuscatedName);
     }
 
     @Override

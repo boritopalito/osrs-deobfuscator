@@ -25,6 +25,11 @@ public class Method {
         return methodNode;
     }
 
+    @Override
+    public String toString() {
+        return String.format("\t[- Method '%s' identified as %s -]", name, obfuscatedName);
+    }
+
     public static class Builder {
         private String name;
         private String obfuscatedName;

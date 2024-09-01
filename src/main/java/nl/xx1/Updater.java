@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
 import nl.xx1.analyzer.AnalyzerSorter;
+import nl.xx1.deobfuscation.Deobfuscator;
 import nl.xx1.deobfuscation.Renamer;
+import nl.xx1.deobfuscation.impl.UnusedFields;
+import nl.xx1.deobfuscation.impl.UnusedMethods;
 import nl.xx1.utilities.JarUtilities;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -30,6 +33,14 @@ public class Updater {
         if (classNodes.isEmpty()) {
             throw new RuntimeException("The .jar file you provided doesn't contain any classes.");
         }
+
+        // ---
+        final List<Deobfuscator> deobfuscators = List.of(new UnusedMethods(classNodes), new UnusedFields(classNodes));
+        for (Deobfuscator deobfuscator : deobfuscators) {
+            deobfuscator.deobfuscate();
+            JarUtilities.recomputeMaxsForClasses(classNodes);
+        }
+        // ---
 
         final List<AbstractAnalyzer> analyzers = sorter.getSortedAnalyzers("nl.xx1.analyzer.impl");
 
@@ -56,7 +67,7 @@ public class Updater {
     }
 
     public static void main(String[] args) {
-        Updater updater = new Updater("gamepacks/osrs-223.jar");
+        Updater updater = new Updater("gamepacks/osrs-209.jar");
         updater.execute();
     }
 }
