@@ -74,7 +74,6 @@ public class Node extends AbstractAnalyzer {
     public void matchMethods(ClassNode classNode) {
         for (MethodNode methodNode : classNode.methods) {
             if (methodNode.name.equals("<init>")) continue;
-            ;
 
             if (methodNode.desc.equals("()Z")) {
                 addMethod("isLinked", methodNode);
@@ -89,7 +88,18 @@ public class Node extends AbstractAnalyzer {
                             .filter(n -> n instanceof FieldInsnNode)
                             .findFirst();
 
-                    optional.ifPresent(abstractInsnNode -> addField("next", (FieldInsnNode) abstractInsnNode));
+                    optional.ifPresent(abstractInsnNode -> addField("previous", (FieldInsnNode) abstractInsnNode));
+                }
+            }
+        }
+
+        for (FieldNode fieldNode : classNode.fields) {
+
+            if (fieldNode.desc.equals(String.format("L%s;", classNode.name))) {
+                if (getField("previous").getObfuscatedName().equals(fieldNode.name)) {
+                    continue;
+                } else {
+                    addField("next", fieldNode);
                 }
             }
         }

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
 import nl.xx1.analyzer.AnalyzerSorter;
+import nl.xx1.analyzer.impl.Client;
+import nl.xx1.analyzer.impl.Link;
+import nl.xx1.analyzer.impl.Node;
 import nl.xx1.deobfuscation.Deobfuscator;
 import nl.xx1.deobfuscation.Renamer;
 import nl.xx1.deobfuscation.impl.UnusedFields;
@@ -17,6 +20,10 @@ public class Updater {
 
     public Updater(String path) {
         this.path = path;
+    }
+
+    private List<AbstractAnalyzer> getAnalyzers() {
+        return List.of(new Client(), new Node(), new Link());
     }
 
     public void execute() {
@@ -42,19 +49,17 @@ public class Updater {
         }
         // ---
 
-        final List<AbstractAnalyzer> analyzers = sorter.getSortedAnalyzers("nl.xx1.analyzer.impl");
+        final List<AbstractAnalyzer> analyzers = getAnalyzers();
 
-        for (ClassNode classNode : classNodes) {
-            Optional<AbstractAnalyzer> optional = analyzers.stream()
-                    .filter(abstractAnalyzer -> abstractAnalyzer.canRun(classNode))
-                    .findFirst();
+        for (AbstractAnalyzer analyzer : analyzers) {
+            Optional<ClassNode> optional =
+                    classNodes.stream().filter(analyzer::canRun).findFirst();
 
             if (optional.isEmpty()) {
-                // System.out.println(String.format("[- %s is broken -]", classNode.name));
                 continue;
             }
 
-            AbstractAnalyzer analyzer = optional.get();
+            ClassNode classNode = optional.get();
             analyzer.execute(classNode);
             analyzer.print();
         }

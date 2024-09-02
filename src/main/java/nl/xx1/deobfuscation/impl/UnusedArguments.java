@@ -1,9 +1,8 @@
 package nl.xx1.deobfuscation.impl;
 
+import java.util.List;
 import nl.xx1.deobfuscation.AbstractDeobfuscator;
 import org.objectweb.asm.tree.ClassNode;
-
-import java.util.List;
 
 public class UnusedArguments extends AbstractDeobfuscator {
     public UnusedArguments(List<ClassNode> classNodes) {
@@ -11,7 +10,5 @@ public class UnusedArguments extends AbstractDeobfuscator {
     }
 
     @Override
-    public void deobfuscate() {
-
-    }
+    public void deobfuscate() {}
 }

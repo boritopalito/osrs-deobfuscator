@@ -85,6 +85,14 @@ public abstract class AbstractAnalyzer {
         return fieldCount(this.classNode, condition);
     }
 
+    public long methodCount(ClassNode classNode, Predicate<MethodNode> condition) {
+        return classNode.methods.stream().filter(condition).count();
+    }
+
+    public long methodCount(Predicate<MethodNode> condition) {
+        return methodCount(this.classNode, condition);
+    }
+
     public void print() {
         System.out.println(this);
 
