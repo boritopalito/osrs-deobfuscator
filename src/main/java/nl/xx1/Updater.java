@@ -21,7 +21,15 @@ public class Updater {
     }
 
     private List<AbstractAnalyzer> getAnalyzers() {
-        return List.of(new Client(), new Node(), new Link(), new LinkedList(), new RSException(), new InflaterWrapper());
+        return List.of(
+                new Client(),
+                new Node(),
+                new Link(),
+                new LinkedList(),
+                new RSException(),
+                new InflaterWrapper(),
+                new ItemStorage(),
+                new ByteBuffer());
     }
 
     public void execute() {
@@ -70,7 +78,7 @@ public class Updater {
     }
 
     public static void main(String[] args) {
-        Updater updater = new Updater("gamepacks/osrs-209.jar");
+        Updater updater = new Updater("gamepacks/osrs-224.jar");
         updater.execute();
     }
 }

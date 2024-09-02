@@ -1,5 +1,6 @@
 package nl.xx1.analyzer.impl;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
@@ -22,9 +23,13 @@ public class Link extends AbstractAnalyzer {
             return false;
         }
 
-        long selfCount = fieldCount(classNode, f -> f.desc.equals(String.format("L%s;", classNode.name)));
+        long selfCount = fieldCount(classNode, f -> f.desc.equalsIgnoreCase(String.format("L%s;", classNode.name)));
+        long staticMethodCount = methodCount(classNode, m -> Modifier.isStatic(m.access));
 
-        return classNode.fields.size() == 2 && selfCount == 2;
+        return Modifier.isPublic(classNode.access)
+                && classNode.fields.size() == 2
+                && selfCount == 2
+                && staticMethodCount == 0;
     }
 
     @Override
