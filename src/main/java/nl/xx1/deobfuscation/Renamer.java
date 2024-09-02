@@ -107,6 +107,10 @@ public class Renamer {
                                 && methodInsnNode.name.equals(method.getObfuscatedName())) {
                             methodInsnNode.name = method.getName();
                         }
+
+                        if (methodInsnNode.owner.equals(analyzer.getClass().getSimpleName())) {
+                            methodInsnNode.name = method.getName();
+                        }
                     }
                 }
             }

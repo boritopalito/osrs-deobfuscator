@@ -1,8 +1,15 @@
 package nl.xx1.analyzer.impl;
 
+import java.util.List;
+import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
 import nl.xx1.analyzer.Analyzer;
+import nl.xx1.utilities.InstructionSearcher;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.MethodNode;
 
 @Analyzer(
         name = "Link",
@@ -15,17 +22,37 @@ public class Link extends AbstractAnalyzer {
             return false;
         }
 
-        if (classNode.fields.size() != 2) return false;
-
         long selfCount = fieldCount(classNode, f -> f.desc.equals(String.format("L%s;", classNode.name)));
 
-        if (selfCount != 2) return false;
-        return true;
+        return classNode.fields.size() == 2 && selfCount == 2;
     }
 
     @Override
-    public void matchFields(ClassNode classNode) {}
+    public void matchFields(ClassNode classNode) {
+        Optional<MethodNode> optional =
+                classNode.methods.stream().filter(m -> !m.name.equals("<init>")).findFirst();
+
+        if (optional.isPresent()) {
+            InstructionSearcher is = new InstructionSearcher(
+                    optional.get().instructions,
+                    Opcodes.ALOAD,
+                    Opcodes.GETFIELD,
+                    Opcodes.ALOAD,
+                    Opcodes.GETFIELD,
+                    Opcodes.PUTFIELD);
+
+            if (is.match()) {
+                List<AbstractInsnNode> firstMatch = is.getFirstMatch();
+                addField("next", (FieldInsnNode) firstMatch.get(1));
+                addField("previous", (FieldInsnNode) firstMatch.get(3));
+            }
+
+            addMethod("unlink", optional.get());
+        }
+    }
 
     @Override
-    public void matchMethods(ClassNode classNode) {}
+    public void matchMethods(ClassNode classNode) {
+        // We already matched everything
+    }
 }
