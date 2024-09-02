@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
-import nl.xx1.analyzer.AnalyzerSorter;
-import nl.xx1.analyzer.impl.Client;
-import nl.xx1.analyzer.impl.Link;
-import nl.xx1.analyzer.impl.Node;
+import nl.xx1.analyzer.AnalyzerContext;
+import nl.xx1.analyzer.impl.*;
 import nl.xx1.deobfuscation.Deobfuscator;
 import nl.xx1.deobfuscation.Renamer;
 import nl.xx1.deobfuscation.impl.UnusedFields;
@@ -23,11 +21,10 @@ public class Updater {
     }
 
     private List<AbstractAnalyzer> getAnalyzers() {
-        return List.of(new Client(), new Node(), new Link());
+        return List.of(new Client(), new Node(), new Link(), new LinkedList(), new RSException(), new InflaterWrapper());
     }
 
     public void execute() {
-        final AnalyzerSorter sorter = new AnalyzerSorter();
         final File file = new File(this.path);
 
         if (!file.exists()) {
@@ -41,17 +38,18 @@ public class Updater {
             throw new RuntimeException("The .jar file you provided doesn't contain any classes.");
         }
 
-        // ---
         final List<Deobfuscator> deobfuscators = List.of(new UnusedMethods(classNodes), new UnusedFields(classNodes));
         for (Deobfuscator deobfuscator : deobfuscators) {
             deobfuscator.deobfuscate();
             JarUtilities.recomputeMaxsForClasses(classNodes);
         }
-        // ---
 
         final List<AbstractAnalyzer> analyzers = getAnalyzers();
+        final AnalyzerContext context = new AnalyzerContext(analyzers);
 
         for (AbstractAnalyzer analyzer : analyzers) {
+            analyzer.setContext(context);
+
             Optional<ClassNode> optional =
                     classNodes.stream().filter(analyzer::canRun).findFirst();
 

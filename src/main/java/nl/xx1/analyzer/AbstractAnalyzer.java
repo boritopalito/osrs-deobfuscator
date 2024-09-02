@@ -6,15 +6,18 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import nl.xx1.Field;
 import nl.xx1.Method;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public abstract class AbstractAnalyzer {
+public abstract class AbstractAnalyzer implements Opcodes {
     private ClassNode classNode;
     private final List<Field> fields = new ArrayList<>();
     private final List<Method> methods = new ArrayList<>();
+
+    protected AnalyzerContext context;
 
     public abstract boolean canRun(ClassNode classNode);
 
@@ -109,10 +112,18 @@ public abstract class AbstractAnalyzer {
         return classNode;
     }
 
+    public String getDescription() {
+        return String.format("L%s;", classNode.name);
+    }
+
     @Override
     public String toString() {
         return String.format(
                 "[- %s identified as %s extends %s -]",
                 getClass().getSimpleName(), classNode.name, classNode.superName);
+    }
+
+    public void setContext(AnalyzerContext context) {
+        this.context = context;
     }
 }
