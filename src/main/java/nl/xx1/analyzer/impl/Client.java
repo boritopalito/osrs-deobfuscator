@@ -16,4 +16,7 @@ public class Client extends AbstractAnalyzer {
 
     @Override
     public void matchFields(ClassNode classNode) {}
+
+    @Override
+    public void matchMethods(ClassNode classNode) {}
 }

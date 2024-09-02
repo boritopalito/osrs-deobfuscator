@@ -1,10 +1,13 @@
 package nl.xx1.analyzer.impl;
 
+import static org.objectweb.asm.Opcodes.*;
+
+import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
 import nl.xx1.analyzer.Analyzer;
+import nl.xx1.utilities.InstructionSearcher;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.*;
 
 /**
  * Analyzer for identifying and analyzing the Node class in a data structure.
@@ -64,6 +67,41 @@ public class Node extends AbstractAnalyzer {
             // Note: We don't add the 'previous' and 'next' fields here as they're not
             // distinguished. If needed, this could be extended to identify them based
             // on naming conventions or additional analysis.
+        }
+    }
+
+    @Override
+    public void matchMethods(ClassNode classNode) {
+        for (MethodNode methodNode : classNode.methods) {
+            if (methodNode.name.equals("<init>")) continue;
+
+            if (methodNode.desc.equals("()Z")) {
+                addMethod("isLinked", methodNode);
+            }
+
+            if (methodNode.desc.equals("()V")) {
+                addMethod("unlink", methodNode);
+                InstructionSearcher is = new InstructionSearcher(methodNode.instructions, ALOAD, GETFIELD, IFNONNULL);
+
+                if (is.match()) {
+                    Optional<AbstractInsnNode> optional = is.getFirstMatch().stream()
+                            .filter(n -> n instanceof FieldInsnNode)
+                            .findFirst();
+
+                    optional.ifPresent(abstractInsnNode -> addField("previous", (FieldInsnNode) abstractInsnNode));
+                }
+            }
+        }
+
+        for (FieldNode fieldNode : classNode.fields) {
+
+            if (fieldNode.desc.equals(String.format("L%s;", classNode.name))) {
+                if (getField("previous").getObfuscatedName().equals(fieldNode.name)) {
+                    continue;
+                } else {
+                    addField("next", fieldNode);
+                }
+            }
         }
     }
 }

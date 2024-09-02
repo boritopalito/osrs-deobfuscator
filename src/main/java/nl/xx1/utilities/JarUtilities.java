@@ -29,7 +29,7 @@ public class JarUtilities {
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
 
-                if (!entry.getName().endsWith(".class")) {
+                if (!entry.getName().endsWith(".class") || entry.getName().contains("bouncycastle")) {
                     continue;
                 }
 
