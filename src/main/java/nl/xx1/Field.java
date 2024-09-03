@@ -34,7 +34,12 @@ public class Field {
 
     @Override
     public String toString() {
-        return String.format("\t[- Field '%s' identified as %s -]", name, obfuscatedName);
+        StringBuilder response = new StringBuilder();
+        response.append(String.format("\t[- Field '%s' identified as %s -]", name, obfuscatedName));
+        if (multiplier > 1) {
+            response.append(String.format("\t[* %d]", multiplier));
+        }
+        return response.toString();
     }
 
     @Override

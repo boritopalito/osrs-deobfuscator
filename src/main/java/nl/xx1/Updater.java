@@ -11,6 +11,7 @@ import nl.xx1.deobfuscation.Renamer;
 import nl.xx1.deobfuscation.impl.UnusedFields;
 import nl.xx1.deobfuscation.impl.UnusedMethods;
 import nl.xx1.utilities.JarUtilities;
+import nl.xx1.utilities.MultiplierFinder;
 import org.objectweb.asm.tree.ClassNode;
 
 public class Updater {
@@ -29,7 +30,10 @@ public class Updater {
                 new RSException(),
                 new InflaterWrapper(),
                 new ItemStorage(),
-                new ByteBuffer());
+                new ByteBuffer(),
+                new ByteArrayNode(),
+                new AbstractByteBuffer(),
+                new Canvas());
     }
 
     public void execute() {
@@ -41,6 +45,9 @@ public class Updater {
         }
 
         final List<ClassNode> classNodes = JarUtilities.loadClassNodes(file);
+
+        MultiplierFinder multiplierFinder = new MultiplierFinder(classNodes);
+        multiplierFinder.findMultipliers();
 
         if (classNodes.isEmpty()) {
             throw new RuntimeException("The .jar file you provided doesn't contain any classes.");
@@ -78,7 +85,7 @@ public class Updater {
     }
 
     public static void main(String[] args) {
-        Updater updater = new Updater("gamepacks/osrs-224.jar");
+        Updater updater = new Updater("gamepacks/osrs-209.jar");
         updater.execute();
     }
 }
