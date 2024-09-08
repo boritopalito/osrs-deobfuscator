@@ -1,6 +1,7 @@
 package nl.xx1;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import nl.xx1.analyzer.AbstractAnalyzer;
@@ -33,7 +34,12 @@ public class Updater {
                 new ByteBuffer(),
                 new ByteArrayNode(),
                 new AbstractByteBuffer(),
-                new Canvas());
+                new Producer(),
+                new Canvas(),
+                new DualNode(),
+                new ClientPreferences(),
+                new AbstractDualNode(),
+                new RendererNode());
     }
 
     public void execute() {
@@ -61,6 +67,7 @@ public class Updater {
 
         final List<AbstractAnalyzer> analyzers = getAnalyzers();
         final AnalyzerContext context = new AnalyzerContext(analyzers);
+        final List<AbstractAnalyzer> brokenAnalyzers = new ArrayList<>();
 
         for (AbstractAnalyzer analyzer : analyzers) {
             analyzer.setContext(context);
@@ -69,6 +76,7 @@ public class Updater {
                     classNodes.stream().filter(analyzer::canRun).findFirst();
 
             if (optional.isEmpty()) {
+                brokenAnalyzers.add(analyzer);
                 continue;
             }
 
@@ -76,6 +84,10 @@ public class Updater {
             analyzer.execute(classNode);
             analyzer.print();
         }
+
+        brokenAnalyzers.forEach(a -> {
+            System.out.println(a.getClass().getSimpleName() + " is broken");
+        });
 
         Renamer renamer = new Renamer();
         renamer.execute(classNodes, analyzers);

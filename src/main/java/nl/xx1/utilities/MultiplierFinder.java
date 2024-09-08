@@ -18,8 +18,7 @@ public class MultiplierFinder implements Opcodes {
             for (MethodNode method : classNode.methods) {
                 InstructionSearcher is = new InstructionSearcher(method.instructions, LDC, ALOAD, GETFIELD, IMUL);
 
-                if (!is.match())
-                    continue;
+                if (!is.match()) continue;
 
                 List<AbstractInsnNode[]> matches = is.getMatches();
 
