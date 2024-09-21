@@ -1,6 +1,5 @@
 package nl.xx1.utilities;
 
-
 import java.util.HashMap;
 import java.util.Map;
 

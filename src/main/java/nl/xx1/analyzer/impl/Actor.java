@@ -9,7 +9,13 @@ import org.objectweb.asm.tree.MethodNode;
 public class Actor extends AbstractAnalyzer {
     @Override
     public boolean canRun(ClassNode classNode) {
-        String rendererNodeName = context.getAnalyzer("RendererNode").getClassNode().name;
+        ClassNode rendererNode = context.getAnalyzer("RendererNode").getClassNode();
+
+        if (rendererNode == null) {
+            return false;
+        }
+
+        String rendererNodeName = rendererNode.name;
 
         return classNode.superName.equals(rendererNodeName)
                 && classNode.methods.stream().anyMatch(method -> {

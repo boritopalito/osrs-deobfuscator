@@ -1,8 +1,6 @@
 package nl.xx1.utilities;
 
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.InsnList;
+import static java.lang.reflect.Modifier.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -11,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static java.lang.reflect.Modifier.*;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 
 public class RegexInsnSearcher {
     private static final Map<Integer, String> OPCODE_NAME_MAP;
-    private static final Pattern[] NON_INSTRUCTION_CONST_PATTERNS = new Pattern[]{
-            Pattern.compile("acc_.+"), Pattern.compile("t_.+"), Pattern.compile("v1_.+")
-    };
+    private static final Pattern[] NON_INSTRUCTION_CONST_PATTERNS =
+            new Pattern[] {Pattern.compile("acc_.+"), Pattern.compile("t_.+"), Pattern.compile("v1_.+")};
 
     private InsnList insns;
     private Map<AbstractInsnNode, Integer> instrIndexMap;
@@ -63,8 +61,7 @@ public class RegexInsnSearcher {
         }
         AbstractInsnNode endInsn = getKey(realEndIdx);
         int startInsnIdx = 0;
-        if (startInsn != null)
-            startInsnIdx = insns.indexOf(startInsn);
+        if (startInsn != null) startInsnIdx = insns.indexOf(startInsn);
         AbstractInsnNode[] match = new AbstractInsnNode[insns.indexOf(endInsn) - startInsnIdx + 1];
         for (int idx = 0; idx < match.length; ++idx) {
             match[idx] = insns.get(startInsnIdx + idx);
@@ -104,8 +101,7 @@ public class RegexInsnSearcher {
         Matcher matcher = pattern.matcher(mappedCode);
         Integer ret = instrIndexMap.get(from);
         int startIdx = 0;
-        if (ret != null)
-            startIdx = ret;
+        if (ret != null) startIdx = ret;
         List<AbstractInsnNode[]> matches = new LinkedList<AbstractInsnNode[]>();
         while (matcher.find(startIdx)) {
             int start = matcher.start();

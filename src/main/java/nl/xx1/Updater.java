@@ -11,6 +11,7 @@ import nl.xx1.deobfuscation.Deobfuscator;
 import nl.xx1.deobfuscation.Renamer;
 import nl.xx1.deobfuscation.impl.UnusedFields;
 import nl.xx1.deobfuscation.impl.UnusedMethods;
+import nl.xx1.hooks.Hooks;
 import nl.xx1.utilities.JarUtilities;
 import nl.xx1.utilities.MultiplierFinder;
 import org.objectweb.asm.tree.ClassNode;
@@ -97,10 +98,14 @@ public class Updater {
 
         JarUtilities.recomputeMaxsForClasses(classNodes);
         JarUtilities.saveClassesToDisk(classNodes, String.format("deob-gamepacks/%s/", file.getName()));
+
+        Hooks hooks = new Hooks(
+                analyzers.stream().filter(a -> a.getClassNode() != null).toList());
+        hooks.write("hooks.json");
     }
 
     public static void main(String[] args) {
-        Updater updater = new Updater("gamepacks/osrs-224.jar");
+        Updater updater = new Updater("gamepacks/osrs-225.jar");
         updater.execute();
     }
 }

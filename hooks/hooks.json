@@ -1,0 +1,268 @@
+[
+  {
+    "name" : "Client",
+    "obfuscatedName" : "Client",
+    "superClass" : "ba",
+    "access" : 49,
+    "fields" : [ ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "Node",
+    "obfuscatedName" : "Node",
+    "superClass" : "java/lang/Object",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "uid",
+        "obfuscatedName" : "hk",
+        "descriptor" : "J",
+        "static" : false
+      },
+      {
+        "name" : "previous",
+        "obfuscatedName" : "hd",
+        "descriptor" : "LNode;",
+        "static" : false
+      },
+      {
+        "name" : "next",
+        "obfuscatedName" : "hy",
+        "descriptor" : "LNode;",
+        "static" : false
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "unlink",
+        "obfuscatedName" : "jb",
+        "descriptor" : "()V",
+        "static" : false
+      },
+      {
+        "name" : "isLinked",
+        "obfuscatedName" : "jj",
+        "descriptor" : "()Z",
+        "static" : false
+      }
+    ]
+  },
+  {
+    "name" : "Link",
+    "obfuscatedName" : "Link",
+    "superClass" : "java/lang/Object",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "next",
+        "obfuscatedName" : "ax",
+        "descriptor" : "LLink;",
+        "static" : false
+      },
+      {
+        "name" : "previous",
+        "obfuscatedName" : "am",
+        "descriptor" : "LLink;",
+        "static" : false
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "unlink",
+        "obfuscatedName" : "ac",
+        "descriptor" : "()V",
+        "static" : false
+      }
+    ]
+  },
+  {
+    "name" : "LinkedList",
+    "obfuscatedName" : "LinkedList",
+    "superClass" : "java/lang/Object",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "head",
+        "obfuscatedName" : "ac",
+        "descriptor" : "LLink;",
+        "static" : false
+      },
+      {
+        "name" : "pointer",
+        "obfuscatedName" : "ae",
+        "descriptor" : "LLink;",
+        "static" : false
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "getFirst",
+        "obfuscatedName" : "ae",
+        "descriptor" : "()LLink;",
+        "static" : false
+      },
+      {
+        "name" : "getNext",
+        "obfuscatedName" : "ag",
+        "descriptor" : "()LLink;",
+        "static" : false
+      },
+      {
+        "name" : "addLast",
+        "obfuscatedName" : "ac",
+        "descriptor" : "(LLink;)V",
+        "static" : false
+      }
+    ]
+  },
+  {
+    "name" : "RSException",
+    "obfuscatedName" : "RSException",
+    "superClass" : "java/lang/RuntimeException",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "text",
+        "obfuscatedName" : "aq",
+        "descriptor" : "Ljava/lang/String;",
+        "static" : false
+      },
+      {
+        "name" : "throwable",
+        "obfuscatedName" : "af",
+        "descriptor" : "Ljava/lang/Throwable;",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "InflaterWrapper",
+    "obfuscatedName" : "InflaterWrapper",
+    "superClass" : "java/lang/Object",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "inflator",
+        "obfuscatedName" : "ac",
+        "descriptor" : "Ljava/util/zip/Inflater;",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "ItemStorage",
+    "obfuscatedName" : "ItemStorage",
+    "superClass" : "Node",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "ids",
+        "obfuscatedName" : "ae",
+        "descriptor" : "[I",
+        "static" : false
+      },
+      {
+        "name" : "stackSizes",
+        "obfuscatedName" : "ag",
+        "descriptor" : "[I",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "ByteBuffer",
+    "obfuscatedName" : "ByteBuffer",
+    "superClass" : "Node",
+    "access" : 33,
+    "fields" : [ ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "Canvas",
+    "obfuscatedName" : "Canvas",
+    "superClass" : "java/awt/Canvas",
+    "access" : 49,
+    "fields" : [
+      {
+        "name" : "component",
+        "obfuscatedName" : "ac",
+        "descriptor" : "Ljava/awt/Component;",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "DualNode",
+    "obfuscatedName" : "DualNode",
+    "superClass" : "Node",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "previous",
+        "obfuscatedName" : "ep",
+        "descriptor" : "LDualNode;",
+        "static" : false
+      },
+      {
+        "name" : "next",
+        "obfuscatedName" : "ew",
+        "descriptor" : "LDualNode;",
+        "static" : false
+      }
+    ],
+    "methods" : [
+      {
+        "name" : "unlink",
+        "obfuscatedName" : "jz",
+        "descriptor" : "()V",
+        "static" : false
+      }
+    ]
+  },
+  {
+    "name" : "AbstractDualNode",
+    "obfuscatedName" : "AbstractDualNode",
+    "superClass" : "DualNode",
+    "access" : 1057,
+    "fields" : [
+      {
+        "name" : "index",
+        "obfuscatedName" : "ae",
+        "descriptor" : "I",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  },
+  {
+    "name" : "Coordinate",
+    "obfuscatedName" : "Coordinate",
+    "superClass" : "java/lang/Object",
+    "access" : 33,
+    "fields" : [
+      {
+        "name" : "plane",
+        "obfuscatedName" : "ae",
+        "descriptor" : "I",
+        "static" : false
+      },
+      {
+        "name" : "x",
+        "obfuscatedName" : "ac",
+        "descriptor" : "I",
+        "static" : false
+      },
+      {
+        "name" : "y",
+        "obfuscatedName" : "ag",
+        "descriptor" : "I",
+        "static" : false
+      }
+    ],
+    "methods" : [ ]
+  }
+]
