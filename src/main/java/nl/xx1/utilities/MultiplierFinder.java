@@ -48,4 +48,8 @@ public class MultiplierFinder implements Opcodes {
         }
         System.out.println(multipliers);
     }
+
+    public HashMap<String, Integer> getMultipliers() {
+        return this.multipliers;
+    }
 }

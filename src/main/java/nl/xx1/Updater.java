@@ -39,7 +39,10 @@ public class Updater {
                 new DualNode(),
                 new ClientPreferences(),
                 new AbstractDualNode(),
-                new RendererNode());
+                new RendererNode(),
+                new NpcDefinition(),
+                new Coordinate(),
+                new Actor());
     }
 
     public void execute() {
@@ -66,7 +69,7 @@ public class Updater {
         }
 
         final List<AbstractAnalyzer> analyzers = getAnalyzers();
-        final AnalyzerContext context = new AnalyzerContext(analyzers);
+        final AnalyzerContext context = new AnalyzerContext(analyzers, multiplierFinder.getMultipliers());
         final List<AbstractAnalyzer> brokenAnalyzers = new ArrayList<>();
 
         for (AbstractAnalyzer analyzer : analyzers) {
@@ -97,7 +100,7 @@ public class Updater {
     }
 
     public static void main(String[] args) {
-        Updater updater = new Updater("gamepacks/osrs-209.jar");
+        Updater updater = new Updater("gamepacks/osrs-224.jar");
         updater.execute();
     }
 }

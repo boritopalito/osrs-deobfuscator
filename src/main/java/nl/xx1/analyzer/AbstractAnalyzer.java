@@ -47,11 +47,17 @@ public abstract class AbstractAnalyzer implements Opcodes {
         if (fieldNode == null) {
             return;
         }
+        int multiplier = 1;
+
+        if (fieldNode.desc.equals("I")) {
+            multiplier = context.getMultiplier(String.format("%s.%s", classNode.name, fieldNode.name));
+        }
 
         Field field = new Field.Builder()
                 .fieldNode(fieldNode)
                 .name(name)
                 .obfuscatedName(fieldNode.name)
+                .multiplier(multiplier)
                 .build();
 
         if (fields.contains(field)) return;
