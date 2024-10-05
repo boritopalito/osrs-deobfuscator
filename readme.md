@@ -1,79 +1,97 @@
-# OSRS Gamepack Deobfuscator and Hook Generator
+# OSRS Game Deobfuscator and Updater
 
 ## Overview
 
-This project is a specialized framework designed to deobfuscate Old School RuneScape (OSRS) gamepacks and generate hooks for identifying classes, fields, and methods. It aims to provide researchers and developers with tools to understand and interact with the obfuscated OSRS client code.
+This project is a sophisticated Java-based tool designed for deobfuscating, analyzing, and understanding compiled Java game code, with a specific focus on Old School RuneScape (OSRS). It provides a suite of utilities for reverse engineering, including class analysis, method and field identification, multiplier detection, and hook generation.
 
-**Note: This project is currently in active development.**
+## Key Features
 
-## Features
+1. **Deobfuscation**: Removes unused methods and fields from obfuscated code.
+2. **Class Analysis**: Identifies and analyzes key game classes such as Node, Link, LinkedList, etc.
+3. **Multiplier Detection**: Finds and catalogs arithmetic multipliers used in the game code.
+4. **Hook Generation**: Creates JSON hooks for identified classes, methods, and fields.
+5. **ASM Integration**: Utilizes the ASM library for bytecode manipulation and analysis.
+6. **Extensible Architecture**: Allows easy addition of new analyzers and deobfuscation techniques.
 
-### Current Functionality
+## Project Structure
 
-- **Analyzer System**: A flexible system for creating and managing analyzers for different aspects of the gamepack.
-- **Node Class Analyzer**: Currently implemented to identify and analyze the obfuscated Node class within OSRS gamepacks.
-- **Dynamic Analyzer Ordering**: Utilizes a topological sort to determine the execution order of analyzers based on their interdependencies.
+- `src/main/java/nl/xx1/`:
+   - `analyzer/`: Contains the core analyzer framework and implementations.
+   - `deobfuscation/`: Houses deobfuscation algorithms and utilities.
+   - `hooks/`: Classes for generating and managing hooks.
+   - `utilities/`: Various utility classes for tasks like JAR manipulation and instruction searching.
 
-### Planned Features
+## Key Components
 
-- **Enhanced ASM Node Wrappers**: Custom wrappers around ClassNode, MethodNode, and FieldNode for easier searching and analysis in obfuscated code.
-- **Integer Multiplier Detection**: Tools to identify and analyze integer multipliers commonly used in obfuscated game logic.
-- **Advanced Bytecode Analysis**: Sophisticated tools for searching and analyzing obfuscated Java bytecode.
-- **Hook Generation**: Automated generation of hooks for identified classes, fields, and methods.
+### Analyzers
+- Located in `nl.xx1.analyzer.impl`
+- Each analyzer (e.g., `Node`, `Client`, `LinkedList`) is responsible for identifying and analyzing specific game classes.
 
-## Getting Started
+### Deobfuscators
+- Found in `nl.xx1.deobfuscation.impl`
+- Includes `UnusedMethods` and `UnusedFields` for removing redundant code.
 
-(Instructions for setup and initial usage will be added as the project develops.)
+### Utilities
+- `JarUtilities`: Handles JAR file operations.
+- `MultiplierFinder`: Detects arithmetic multipliers in the code.
+- `InstructionSearcher`: Facilitates bytecode instruction pattern matching.
+
+### Hook Generation
+- `Hooks` class generates JSON output of identified game structures.
 
 ## Usage
 
-Currently, the framework includes a single analyzer for the Node class. Here's an example of how it's implemented:
+1. Place the target JAR file (e.g., OSRS game client) in the `gamepacks/` directory.
+2. Run the `Updater` class, specifying the path to the JAR file.
+3. The tool will:
+   - Deobfuscate the code
+   - Analyze and identify key classes and structures
+   - Generate hooks in the `hooks/` directory
+   - Save deobfuscated classes in the `deob-gamepacks/` directory
 
-```java
-@Analyzer(name = "Node", description = "Identifies the obfuscated Node class.", runAfter = {}, runBefore = {"LinkedList", "DoublyLinkedList"})
-public class NodeAnalyzer extends AbstractAnalyzer {
-    @Override
-    public boolean canAnalyze(ClassNode classNode) {
-        // Implementation to identify the Node class in obfuscated code
-    }
+## Requirements
 
-    @Override
-    public void analyze(ClassNode classNode) {
-        // Analysis and hook generation for the Node class
-    }
-}
-```
+- Java JDK 11 or higher
+- Maven for dependency management
+- ASM library for bytecode manipulation
+- Jackson library for JSON processing
 
-## Development Roadmap
+## Building and Running
 
-1. **ASM Node Wrapper Enhancements**:
-    - Develop custom wrappers around ASM nodes for more efficient analysis of obfuscated code.
-    - Estimated completion: [Date]
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/java-game-deobfuscator.git
+   ```
+2. Navigate to the project directory:
+   ```
+   cd java-game-deobfuscator
+   ```
+3. Build the project with Maven:
+   ```
+   mvn clean install
+   ```
+4. Run the `Updater` class:
+   ```
+   java -cp target/classes nl.xx1.Updater
+   ```
 
-2. **Integer Multiplier Analysis**:
-    - Create tools to detect and decode obfuscated integer multipliers in the gamepack.
-    - Estimated completion: [Date]
+## Extending the Project
 
-3. **Advanced Bytecode Analysis Tools**:
-    - Implement sophisticated methods for searching and analyzing obfuscated Java bytecode.
-    - Estimated completion: [Date]
+- To add new analyzers, create a new class in `nl.xx1.analyzer.impl` extending `AbstractAnalyzer`.
+- Implement new deobfuscation techniques by adding classes to `nl.xx1.deobfuscation.impl`.
 
-4. **Hook Generation System**:
-    - Develop a system to automatically generate hooks for identified classes, fields, and methods.
-    - Estimated completion: [Date]
+## Caution
 
-5. **Additional Deobfuscation Analyzers**:
-    - Implement analyzers for other key obfuscated structures in OSRS gamepacks.
-    - Ongoing development
+This tool is designed for educational and research purposes. Ensure you have the right to analyze and deobfuscate any code you use it on.
 
 ## Contributing
 
-Contributions to the OSRS Gamepack Deobfuscator and Hook Generator are welcome! If you're interested in contributing, please [guidelines or contact information].
+Contributions are welcome! Please fork the repository and submit pull requests with any enhancements, bug fixes, or improvements.
 
 ## License
 
-[Include your chosen license here]
+[Specify your license here, e.g., MIT, GPL, etc.]
 
 ## Disclaimer
 
-This tool is intended for educational and research purposes only. Users are responsible for ensuring their use of this tool complies with Jagex's terms of service for Old School RuneScape. The developers of this tool do not encourage or endorse any use that violates these terms.
+This project is not affiliated with or endorsed by Jagex or Old School RuneScape. Use responsibly and at your own risk.
